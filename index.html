@@ -211,7 +211,6 @@
         darkModeToggle.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌓';
     }
 
-    // Check system preference for dark mode
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
         toggleDarkMode();
     }
