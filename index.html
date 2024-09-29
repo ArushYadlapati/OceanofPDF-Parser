@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EPUB Processor</title>
+    <title>EPUB Parser</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
     <style>
         :root {
@@ -89,10 +89,10 @@
 </head>
 <body>
 <div class="header">
-    <h1>EPUB Processor</h1>
+    <h1>EPUB Parser</h1>
     <button id="darkModeToggle">🌓</button>
 </div>
-<p>Upload an EPUB file to remove all instances of "OceanofPDF.com" and download the processed file.</p>
+<p>Upload an EPUB file to remove all instances of "OceanofPDF.com" and download the parsed file.</p>
 <div id="dropZone">
     <p>Drag and drop your EPUB file here, or click to select a file</p>
     <input type="file" id="fileInput" accept=".epub" style="display: none;">
@@ -131,7 +131,7 @@
             return;
         }
 
-        status.textContent = 'Processing EPUB file...';
+        status.textContent = 'Parsing EPUB file...';
         progressContainer.style.display = 'block';
         processEPUB(file);
     }
@@ -168,12 +168,12 @@
                 updateProgress(processedFiles, totalFiles);
             }
 
-            const processedEPUB = await zip.generateAsync({type: 'blob', mimeType: 'application/epub+zip'});
+            const parsedEPUB = await zip.generateAsync({type: 'blob', mimeType: 'application/epub+zip'});
             const bookName = extractBookName(file.name);
-            downloadFile(processedEPUB, bookName);
-            status.textContent = `EPUB processed successfully! Removed ${totalInstances} instance(s) of "OceanofPDF.com".`;
+            downloadFile(parsedEPUB, bookName);
+            status.textContent = `EPUB parsed successfully! Removed ${totalInstances} instance(s) of "OceanofPDF.com".`;
         } catch (error) {
-            status.textContent = `Error processing EPUB: ${error.message}`;
+            status.textContent = `Error parsing EPUB: ${error.message}`;
         }
     }
 
@@ -183,7 +183,7 @@
         progressBar.textContent = `${percentage}%`;
 
         if (percentage === 100) {
-            status.textContent = 'Processing complete. Downloading file...';
+            status.textContent = 'Parsing complete. Downloading file...';
         }
     }
 
@@ -192,7 +192,7 @@
         if (match) {
             return match[1].replace(/_/g, ' ').trim() + '.epub';
         }
-        return 'Processed Book.epub';
+        return 'Parsed Book.epub';
     }
 
     function downloadFile(blob, filename) {
